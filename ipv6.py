@@ -1,7 +1,5 @@
 import threading
-import subprocess
 import socket
-import urllib
 import urllib2
 import json
 import dns
@@ -27,7 +25,7 @@ class myCheck6(threading.Thread):
         # Open socket and try to connect to it, store results in dictionary
         self.sock = socket.socket(socket.AF_INET6, socket.SOCK_DGRAM)
         try:
-            self.sock.connect(("ipv6.google.com",80))
+            self.sock.connect(("theverge.com",80))
         except socket.error:
             pass
         self.results['address'] = self.sock.getsockname()[0]
