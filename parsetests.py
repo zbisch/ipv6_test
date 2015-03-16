@@ -1,4 +1,5 @@
 import numpy
+import matplotlib.pyplot as plt
 import json
 import ast
 from collections import defaultdict
@@ -106,6 +107,14 @@ for client in ping4:
             pass
     avg4[client] = numpy.mean(speed4[client])
     avg4list.append(avg4[client])
+"""num_bins = 50
+counts, bin_edges = numpy.histogram(avg4list, bins=num_bins, normed=True)
+cdf = numpy.cumsum(counts)
+plt.plot(bin_edges[1:], cdf)
+plt.show()"""
+print max(avg4list)
+xvals = numpy.sort(avg4list)
+yvals = numpy.arange(len(xvals))/float(len(xvals))
 avg4total = numpy.mean(avg4list)
         
         
@@ -116,7 +125,7 @@ for client in pings:
         if trial['ipv6_ping']['failed'] == False:
             ping6.add(client)
 
-# ipv4 ping test speed results
+# ipv6 ping test speed results
 speed6 = defaultdict(list)
 avg6 = dict()
 avg6list = []
@@ -137,6 +146,17 @@ for client in ping6:
             pass
     avg6[client] = numpy.mean(speed6[client])
     avg6list.append(avg6[client])
+x6vals = numpy.sort(avg6list)
+y6vals = numpy.arange(len(x6vals))/float(len(x6vals))
+plt.figure(num=1,figsize=(6,3))
+plt.plot(xvals,yvals,'r-',label='IPv4',linewidth=3.0) 
+plt.plot(x6vals, y6vals,'b--',label='IPv6', linewidth=3.0)
+plt.xlabel('ping time (msecs)')
+plt.ylabel('CDF')
+plt.xlim([0, 200])
+plt.tight_layout()
+plt.legend(loc=4)
+plt.show()
 avg6total = numpy.mean(avg6list)
 # ipv4 website get results
 ft4 = defaultdict(list) # fetch time list for each client
@@ -159,6 +179,7 @@ for client in wget:
     if len(ft4[client]) > 0:
         ft4avg[client] = numpy.mean(ft4[client])
         ft4list.append(ft4avg[client])
+plt.figure(2)
 ft4total = numpy.mean(ft4list)
 
 # ipv6 website get results
